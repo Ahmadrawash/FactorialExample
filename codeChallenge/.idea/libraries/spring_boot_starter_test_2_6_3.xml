@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="spring-boot-starter-test-2.6.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../Jars/spring/spring-boot-starter-test-2.6.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
