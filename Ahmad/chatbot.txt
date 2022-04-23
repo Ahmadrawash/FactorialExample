@@ -1,0 +1,3 @@
+my code is "Chat"
+donal code is "chatbot-demo-main"
+They chatbox folder and app.js is the only working components. Don't worry about the components folder with quiz and options in it. They don't do anything yet
