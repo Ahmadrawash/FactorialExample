@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+          var gettingItem = {
+            id: 0,
+            name: "",
+            quantity: 0
+        }
+        var postingItem = {
+            id: 0,
+            name: "",
+            quantity: 0
+        }
+
+        function viewAllStarter()
+        {
+            alert('viewall clicked');
+            viewAll();
+        }
+
+    async function viewAll()
+     {
+        alert('viewAll clicked');
+        let getUrl = "http://localhost:8080/items/viewall";
+
+        dummyobject = {
+            id:0,
+            name:"something",
+            quantity:1
+        }
+        
+        let response = await fetch(getUrl, {
+           method: 'GET',
+           headers: {
+           
+           },
+           body: {
+
+           }
+        });
+            // let response = await fetch(getUrl, {
+            //     method: 'GET',
+            //     headers: {
+            //         //'Content-Type': 'application/text/plain;charset=utf-8'
+            //         'Content-Type': 'application/json;charset=utf-8'
+            //         //'Content-Type': 'application/text/plain; charset=UTF-8'
+            //     }
+            //     //body: json.stringify(dummyobject)
+            // });
+            
+        console.log('returned');
+        console.log(response);
+        console.log(response.json);
+        alert('url fetched');
+
+        let pallelement = document.getElementById("PViewAll");
+
+            try {
+                let result = await response.json();
+                console.log('returned');
+                  console.log(response);
+                  console.log(response.json);
+                 alert('url fetched');
+
+                alert(result);
+                pallelement.innerHTML += "Result: </br>" + result;
+
+                for (const item of result) {
+                    console.log(item);
+
+                    gettingItem.id = item.id;
+                    gettingItem.name = item.name;
+                    gettingItem.quanitty = item.quantity;
+                    console.log(gettingItem);
+
+
+                    pallelement.innerHTML += "id: " +  gettingItem.id + "</br>";
+                    pallelement.innerHTML += "name: " + gettingItem.name + "</br>";
+                    pallelement.innerHTML += "quantity: " + gettingItem.quantity + "</br>";
+
+                }
+                //let json = await response.json();
+
+                if (result) {
+                    alert("items viewed");
+                } else {
+                    alert("an error in attempting to read all items");
+                }
+            } catch (error) {
+                alert("Error: could not view items");
+            }
+
+        // let pallelement = document.getElementById("PViewAll");
+        // pallelement.innerHTML += "<h1>All elements</h1>";
+        // pallelement.innerHTML += "<h1>element 1</h1>";
+        // pallelement.innerHTML += "<h1>element 2</h1>";
+        // pallelement.innerHTML += "<h1>element 3</h1>";
+        event.preventDefault();
+     }
+     function viewoneStarter()
+     {
+        viewOne();
+     }
+     async function viewOne()
+     {
+         alert('viewone was clicked');
+        //  let pelement = document.getElementById("PViewOne");
+        //  let idelement = document.getElementById("idview");
+        //  pelement.innerHTML += "<h1>one elements which has id: " + idelement.value +" </h1>";
+        //  event.preventDefault();
+
+
+        let inputId = document.getElementById("idview").value;
+         alert('input id is : ' + inputId);
+
+         let getUrl = "http://localhost:8080/items/viewone";
+         let pallelement = document.getElementById("PViewOne");
+         
+
+         gettingItem.id = inputId;
+         gettingItem.name = "";
+         gettingItem.quantity = 1;
+
+            let response = await fetch(getUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                    //'Content-Type': 'application/text/plain; charset=UTF-8'
+                },
+                body: JSON.stringify(gettingItem)
+            });
+
+            try {
+                let json = await response.json();
+                console.log(json);
+
+                // gettingItem.id = json.id;
+                // gettingItem.name = json.name;
+                // gettingItem.type = json.quantity;
+                // console.log(gettingInstrument);
+                pallelement.innerHTML += "RESULT</br>";
+                pallelement.innerHTML += "id: " + json.id + "</br>" +
+                                        "name: " + json.name + "</br>" +
+                                        "quantity: " +json.quantity + "</br>";
+
+               } catch (error) {
+                alert("Error: could not find instrument");
+            }
+            event.preventDefault();
+     }
+     function insert()
+     {
+        let idelement = document.getElementById("idinsert");
+        let nameelement = document.getElementById("name");
+        let quantityelemnet = document.getElementById("quantity");
+        let pinsertelement = document.getElementById("insert");
+        pinsertelement.innerHTML += "you input element with \nid: " + idelement.value + ", \nname: " + nameelement.value + ", \nquantity: " + quantityelemnet.value;
+        AddInventoryItem(idelement.value ,nameelement.value, quantityelemnet.value);
+        event.preventDefault();
+     }
+     async function AddInventoryItem(idstr, namestr, quantitystr) {
+            //let postUrl = "https://ahmadwebproject3.azurewebsites.net/items/insert";
+            let postUrl = "http://localhost:8080/items/insert";
+
+            postingItem.id = idstr;
+            postingItem.name = namestr;
+            postingItem.quanitty = quantitystr;
+            alert ("adding item: " + postingItem.id + ", " + postingItem.name + ",  " + postingItem.quantity)
+
+
+
+            let response = await fetch(postUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                    //'Content-Type': 'application/text/plain; charset=UTF-8'
+                },
+                body: JSON.stringify(postingItem)
+            })
+
+            try {
+                let result = await response.text();
+
+                //let json = await response.json();
+
+                if (result) {
+                    alert("item has been added successful");
+                } else {
+                    alert("an error in attempting to isnert the item");
+                }
+            } catch (error) {
+                alert("Error: could not add item");
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <form method="post">
+        <table>
+            <tr>
+                <td width="33%">
+                    <button onclick="viewAllStarter()">ViewAll</button></br>
+                </td>
+                <td width="33%">
+                    <label>Id</label></br>
+                    <input type="text" id="idview" /></br>
+                    <button onclick="viewoneStarter()">ViewOne</button></br>
+                </td>
+                <td width="33%">
+                    <lable>Id</lable></br>
+                    <input type="text" id="idinsert" /></br>
+                    <lable>name</lable></br>
+                    <input type="text" id="name" /></br>
+                    <lable>quantity</lable></br>
+                    <input type="text" id="quantity" /></br>
+                    <button onclick="insert()">insert</button></br>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td width="33%"><p id="PViewAll">all...</p></td>
+                <td width="33%"> <p id="PViewOne">one...</p></td>
+                <td width="33%"><p id="insert">input...</p></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
